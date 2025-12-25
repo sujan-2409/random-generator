@@ -1,74 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+
+  <!-- ✅ MOBILE VIEW FIX -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Program Allocation Tool</title>
 
   <style>
     body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
 
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    width: 360px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
+    .container {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        width: 92%;              /* ✅ mobile-friendly */
+        max-width: 360px;        /* ✅ desktop cap */
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
 
-h2 {
-    margin-bottom: 15px;
-}
+    h2 {
+        margin-bottom: 15px;
+    }
 
-.range {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
+    .range {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
 
-.range input {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-}
+    .range input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px; /* ✅ better for mobile keyboards */
+    }
 
-.display {
-    font-size: 32px;
-    font-weight: bold;
-    padding: 20px;
-    background: #eef2f5;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
+    .display {
+        font-size: 32px;
+        font-weight: bold;
+        padding: 20px;
+        background: #eef2f5;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        min-height: 40px;
+    }
 
-button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
+    button {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
 
-button:hover {
-    background: #0056b3;
-}
-
+    button:hover {
+        background: #0056b3;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
     <h2>Number Generator</h2>
 
     <div class="range">
@@ -77,78 +83,69 @@ button:hover {
     </div>
 
     <div class="display" id="display">
-        Click Generate
+        Set Min & Max
     </div>
 
     <button onclick="generate()">Generate</button>
 </div>
 
-
-  <script>
+<script>
     const registerNumbers = [
-    "24CS177", "24CS179", "24CS180", "24CS182",
-     "24CS183", "24CS184", "24CS185",
-    "24CS187", "24CS188", "24CS190", "24CS191",
-    "24CS192","24CS193", "24CS194", "24CS195","24CS196",
-    "24CS200", "24CS201"
-];
+        "24CS177", "24CS179", "24CS180", "24CS182",
+        "24CS183", "24CS184", "24CS185",
+        "24CS187", "24CS188", "24CS190", "24CS191",
+        "24CS192","24CS193", "24CS194", "24CS195","24CS196",
+        "24CS200", "24CS201"
+    ];
 
-// 🔒 YOUR FIXED NUMBER ORDER
-const orderedNumbers = [
-    5, 6, 12, 4, 
-    3, 6, 7, 
-    4, 6, 7, 8,
-    1, 4, 3, 6, 1,
-    3, 5
-    
-    
-];
+    const orderedNumbers = [
+        5, 6, 12, 4,
+        3, 6, 7,
+        4, 6, 7, 8,
+        1, 4, 3, 6, 1,
+        3, 5
+    ];
 
-// 📘 Dictionary (Register → Number)
-const registerMap = {};
+    const registerMap = {};
 
-let regIndex = 0;
-let numIndex = 0;
+    let regIndex = 0;
+    let numIndex = 0;
 
-function generate() {
-    const min = parseInt(document.getElementById("min").value);
-    const max = parseInt(document.getElementById("max").value);
+    function generate() {
+        const minInput = document.getElementById("min").value;
+        const maxInput = document.getElementById("max").value;
 
-    let attempts = 0;
-
-    while (attempts < orderedNumbers.length) {
-        const reg = registerNumbers[regIndex];
-        const num = orderedNumbers[numIndex];
-
-        // 🔁 Move forward endlessly
-        regIndex = (regIndex + 1) % registerNumbers.length;
-        numIndex = (numIndex + 1) % orderedNumbers.length;
-        attempts++;
-
-        // 🎯 Min–Max filter
-        if (!isNaN(min) && !isNaN(max) && (num < min || num > max)) {
-            continue;
+        // ✅ BLOCK GENERATION UNTIL BOTH VALUES ARE SET
+        if (minInput === "" || maxInput === "") {
+            document.getElementById("display").innerText = "Set Min & Max";
+            return;
         }
 
-        // 🔄 Overwrite mapping (loop-safe)
-        registerMap[reg] = num;
+        const min = parseInt(minInput);
+        const max = parseInt(maxInput);
 
-        // Show ONLY number to user
-        document.getElementById("display").innerText = num;
+        let attempts = 0;
 
-        // Hidden tracking (optional)
-        console.log("Mapping:", registerMap);
+        while (attempts < orderedNumbers.length) {
+            const reg = registerNumbers[regIndex];
+            const num = orderedNumbers[numIndex];
 
-        return;
+            regIndex = (regIndex + 1) % registerNumbers.length;
+            numIndex = (numIndex + 1) % orderedNumbers.length;
+            attempts++;
+
+            if (num < min || num > max) continue;
+
+            registerMap[reg] = num;
+
+            document.getElementById("display").innerText = num;
+            console.log("Mapping:", registerMap);
+            return;
+        }
+
+        document.getElementById("display").innerText = "No number in range";
     }
-
-    // Fallback (very rare)
-    document.getElementById("display").innerText = "—";
-}
-
-  </script>
+</script>
 
 </body>
 </html>
-
-
