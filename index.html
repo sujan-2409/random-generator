@@ -9,73 +9,87 @@
   <title>Program Allocation Tool</title>
 
   <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+   /* RESET */
+* {
+    box-sizing: border-box;
+}
 
-    .container {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        width: 92%;              /* ✅ mobile-friendly */
-        max-width: 360px;        /* ✅ desktop cap */
-        text-align: center;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
+/* BODY FIX FOR MOBILE */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 16px;
 
-    h2 {
-        margin-bottom: 15px;
-    }
+    /* ❌ remove height:100vh */
+    /* ✅ allow natural height */
+}
 
-    .range {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
+/* CENTER CONTAINER WITHOUT VH */
+.container {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 360px;
+    margin: 40px auto; /* centers vertically nicely */
 
-    .range input {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px; /* ✅ better for mobile keyboards */
-    }
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
 
-    .display {
-        font-size: 32px;
-        font-weight: bold;
-        padding: 20px;
-        background: #eef2f5;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        min-height: 40px;
-    }
+h2 {
+    margin-bottom: 16px;
+    font-size: 20px;
+}
 
-    button {
-        width: 100%;
-        padding: 14px;
-        font-size: 16px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-    }
+.range {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
 
-    button:hover {
-        background: #0056b3;
-    }
+.range input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* DISPLAY FIX */
+.display {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 18px;
+    background: #eef2f5;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    min-height: 48px;
+}
+
+/* BUTTON FIX */
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* TOUCH FEEL */
+button:active {
+    transform: scale(0.98);
+}
+
   </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>Number Generator</h2>
+    <h2> Random Number Generator</h2>
 
     <div class="range">
         <input type="number" id="min" placeholder="Min">
@@ -149,3 +163,4 @@
 
 </body>
 </html>
+
