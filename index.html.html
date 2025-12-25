@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Program Allocation Tool</title>
+
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.range {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.range input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.display {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 20px;
+    background: #eef2f5;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Number Generator</h2>
+
+    <div class="range">
+        <input type="number" id="min" placeholder="Min">
+        <input type="number" id="max" placeholder="Max">
+    </div>
+
+    <div class="display" id="display">
+        Click Generate
+    </div>
+
+    <button onclick="generate()">Generate</button>
+</div>
+
+
+  <script>
+    const registerNumbers = [
+    "224CS177", "24CS178", "24CS180", "22CS004",
+    "22CS005", "22CS006", "22CS007", "22CS008",
+    "22CS009", "22CS010", "22CS011", "22CS012",
+    "22CS013", "22CS014"
+];
+
+// 🔒 YOUR FIXED NUMBER ORDER
+const orderedNumbers = [
+    5, 12, 18, 23, 29, 34, 41,
+    46, 52, 58, 63, 71, 77, 84
+];
+
+// 📘 Dictionary (Register → Number)
+const registerMap = {};
+
+let regIndex = 0;
+let numIndex = 0;
+
+function generate() {
+    const min = parseInt(document.getElementById("min").value);
+    const max = parseInt(document.getElementById("max").value);
+
+    let attempts = 0;
+
+    while (attempts < orderedNumbers.length) {
+        const reg = registerNumbers[regIndex];
+        const num = orderedNumbers[numIndex];
+
+        // 🔁 Move forward endlessly
+        regIndex = (regIndex + 1) % registerNumbers.length;
+        numIndex = (numIndex + 1) % orderedNumbers.length;
+        attempts++;
+
+        // 🎯 Min–Max filter
+        if (!isNaN(min) && !isNaN(max) && (num < min || num > max)) {
+            continue;
+        }
+
+        // 🔄 Overwrite mapping (loop-safe)
+        registerMap[reg] = num;
+
+        // Show ONLY number to user
+        document.getElementById("display").innerText = num;
+
+        // Hidden tracking (optional)
+        console.log("Mapping:", registerMap);
+
+        return;
+    }
+
+    // Fallback (very rare)
+    document.getElementById("display").innerText = "—";
+}
+
+  </script>
+
+</body>
+</html>
